@@ -51,158 +51,59 @@ export class Vector2 {
     public y: number = 0
   ) {}
 
-  fromArray(array: ArrayLike<number>, index: number = 0) {
-    Vector2.FromArrayToRef(array, index, this);
-    return this;
+  add(other: Vector2): Vector2 {
+    return new Vector2(this.x + other.x, this.y + other.y);
   }
 
-  asArray(): number[] {
+  subtract(other: Vector2): Vector2 {
+    return new Vector2(this.x - other.x, this.y - other.y);
+  }
+
+  multiply(other: Vector2): Vector2 {
+    return new Vector2(this.x * other.x, this.y * other.y);
+  }
+
+  scale(scalar: number): Vector2 {
+    return new Vector2(this.x * scalar, this.y * scalar);
+  }
+
+  equals(other: Vector2): boolean {
+    return this.x === other.x && this.y === other.y;
+  }
+
+  toArray(): number[] {
     return [this.x, this.y];
   }
 
-  copyFrom(source: Vector2) {
-    this.x = source.x;
-    this.y = source.y;
-    return this;
+  clone(): Vector2 {
+    return new Vector2(this.x, this.y);
   }
 
-  set(x: number, y: number) {
+  set(x: number, y: number): Vector2 {
     this.x = x;
     this.y = y;
     return this;
   }
 
-  add(b: Vector2) {
-    return new (this.constructor as any)(this.x + b.x, this.y + b.y);
-  }
-
-  addToRef(b: Vector2, ref: Vector2): Vector2 {
-    ref.x = this.x + b.x;
-    ref.y = this.y + b.y;
-    return ref;
-  }
-
-  addInPlace(b: Vector2) {
-    this.x += b.x;
-    this.y += b.y;
+  copyFrom(other: Vector2): Vector2 {
+    this.x = other.x;
+    this.y = other.y;
     return this;
-  }
-
-  subtract(b: Vector2) {
-    return new (this.constructor as any)(this.x - b.x, this.y - b.y);
-  }
-
-  subtractToRef(b: Vector2, ref: Vector2): Vector2 {
-    ref.x = this.x - b.x;
-    ref.y = this.y - b.y;
-    return ref;
-  }
-
-  subtractInPlace(b: Vector2) {
-    this.x -= b.x;
-    this.y -= b.y;
-    return this;
-  }
-
-  multiplyInPlace(b: Vector2) {
-    this.x *= b.x;
-    this.y *= b.y;
-    return this;
-  }
-
-  multiply(b: Vector2) {
-    return new (this.constructor as any)(this.x * b.x, this.y * b.y);
-  }
-
-  multiplyToRef(b: Vector2, ref: Vector2): Vector2 {
-    ref.x = this.x * b.x;
-    ref.y = this.y * b.y;
-    return ref;
-  }
-
-  divide(b: Vector2) {
-    return new (this.constructor as any)(this.x / b.x, this.y / b.y);
-  }
-
-  divideToRef(b: Vector2, ref: Vector2): Vector2 {
-    ref.x = this.x / b.x;
-    ref.y = this.y / b.y;
-    return ref;
-  }
-
-  divideInPlace(b: Vector2) {
-    return this.divideToRef(b, this);
-  }
-
-  scaleInPlace(scale: number) {
-    this.x *= scale;
-    this.y *= scale;
-    return this;
-  }
-
-  scale(scale: number) {
-    const result = new (this.constructor as any)(0, 0);
-    this.scaleToRef(scale, result);
-    return result;
-  }
-
-  scaleToRef(scale: number, result: Vector2): Vector2 {
-    result.x = this.x * scale;
-    result.y = this.y * scale;
-    return result;
-  }
-
-  scaleAndAddToRef(scale: number, ref: Vector2): Vector2 {
-    ref.x += this.x * scale;
-    ref.y += this.y * scale;
-    return ref;
-  }
-
-  equals(b: Vector2): boolean {
-    return b && this.x === b.x && this.y === b.y;
-  }
-
-  floor() {
-    return new (this.constructor as any)(Math.floor(this.x), Math.floor(this.y));
   }
 
   length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
-  lengthSquared(): number {
-    return this.x * this.x + this.y * this.y;
-  }
-
-  normalize() {
+  normalize(): Vector2 {
     const len = this.length();
     if (len === 0 || len === 1) {
-      return this;
+      return this.clone();
     }
-
-    return this.scaleInPlace(1 / len);
+    return this.scale(1 / len);
   }
 
-  normalizeToNew() {
-    const normalized = new (this.constructor as any)(0, 0);
-    this.normalizeToRef(normalized);
-    return normalized;
-  }
-
-  normalizeToRef(ref: Vector2): Vector2 {
-    const len = this.length();
-    if (len === 0 || len === 1) {
-      return ref.copyFrom(this);
-    }
-
-    return this.scaleToRef(1 / len, ref);
-  }
-
-  clone() {
-    return new (this.constructor as any)(this.x, this.y);
-  }
-
-  dot(b: Vector2): number {
-    return this.x * b.x + this.y * b.y;
+  dot(other: Vector2): number {
+    return this.x * other.x + this.y * other.y;
   }
 }

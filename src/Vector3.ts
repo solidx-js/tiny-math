@@ -66,181 +66,75 @@ export class Vector3 {
     return ref;
   }
 
-  static Dot(left: Vector3, right: Vector3): number {
-    return left.x * right.x + left.y * right.y + left.z * right.z;
-  }
-
-  static Normalize(vector: Vector3): Vector3 {
-    const ref = Vector3.Zero();
-    Vector3.NormalizeToRef(vector, ref);
-    return ref;
-  }
-
-  static NormalizeToRef(vector: Vector3, ref: Vector3): Vector3 {
-    vector.normalizeToRef(ref);
-    return ref;
-  }
-
   constructor(
     public x: number = 0,
     public y: number = 0,
     public z: number = 0
   ) {}
 
-  asArray(): number[] {
-    return [this.x, this.y, this.z];
+  add(b: Vector3): Vector3 {
+    return new Vector3(this.x + b.x, this.y + b.y, this.z + b.z);
   }
 
-  addInPlace(b: Vector3) {
-    this.x += b.x;
-    this.y += b.y;
-    this.z += b.z;
-    return this;
+  subtract(b: Vector3): Vector3 {
+    return new Vector3(this.x - b.x, this.y - b.y, this.z - b.z);
   }
 
-  addInPlaceFromFloats(x: number, y: number, z: number) {
-    this.x += x;
-    this.y += y;
-    this.z += z;
-    return this;
+  multiply(b: Vector3): Vector3 {
+    return new Vector3(this.x * b.x, this.y * b.y, this.z * b.z);
   }
 
-  add(b: Vector3) {
-    return new (this.constructor as any)(this.x + b.x, this.y + b.y, this.z + b.z);
-  }
-
-  addToRef(b: Vector3, ref: Vector3): Vector3 {
-    return ref.set(this.x + b.x, this.y + b.y, this.z + b.z);
-  }
-
-  subtractInPlace(b: Vector3) {
-    this.x -= b.x;
-    this.y -= b.y;
-    this.z -= b.z;
-    return this;
-  }
-
-  subtract(b: Vector3) {
-    return new (this.constructor as any)(this.x - b.x, this.y - b.y, this.z - b.z);
-  }
-
-  subtractToRef(b: Vector3, ref: Vector3): Vector3 {
-    return this.subtractFromFloatsToRef(b.x, b.y, b.z, ref);
-  }
-
-  subtractFromFloats(x: number, y: number, z: number) {
-    return new (this.constructor as any)(this.x - x, this.y - y, this.z - z);
-  }
-
-  subtractFromFloatsToRef(x: number, y: number, z: number, ref: Vector3): Vector3 {
-    return ref.set(this.x - x, this.y - y, this.z - z);
-  }
-
-  scaleInPlace(scale: number) {
-    this.x *= scale;
-    this.y *= scale;
-    this.z *= scale;
-    return this;
-  }
-
-  scale(scale: number) {
-    return new (this.constructor as any)(this.x * scale, this.y * scale, this.z * scale);
-  }
-
-  scaleToRef(scale: number, ref: Vector3): Vector3 {
-    return ref.set(this.x * scale, this.y * scale, this.z * scale);
+  scale(s: number): Vector3 {
+    return new Vector3(this.x * s, this.y * s, this.z * s);
   }
 
   equals(b: Vector3): boolean {
-    return b && this.x === b.x && this.y === b.y && this.z === b.z;
+    return this.x === b.x && this.y === b.y && this.z === b.z;
   }
 
-  multiplyInPlace(b: Vector3) {
-    this.x *= b.x;
-    this.y *= b.y;
-    this.z *= b.z;
-    return this;
+  toArray(): number[] {
+    return [this.x, this.y, this.z];
   }
 
-  multiply(b: Vector3) {
-    return this.multiplyByFloats(b.x, b.y, b.z);
+  clone(): Vector3 {
+    return new Vector3(this.x, this.y, this.z);
   }
 
-  multiplyToRef(b: Vector3, ref: Vector3): Vector3 {
-    return ref.set(this.x * b.x, this.y * b.y, this.z * b.z);
-  }
-
-  multiplyByFloats(x: number, y: number, z: number) {
-    return new (this.constructor as any)(this.x * x, this.y * y, this.z * z);
-  }
-
-  divide(b: Vector3) {
-    return new (this.constructor as any)(this.x / b.x, this.y / b.y, this.z / b.z);
-  }
-
-  divideToRef(b: Vector3, ref: Vector3): Vector3 {
-    return ref.set(this.x / b.x, this.y / b.y, this.z / b.z);
-  }
-
-  divideInPlace(b: Vector3) {
-    return this.divideToRef(b, this);
-  }
-
-  length(): number {
-    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-  }
-
-  lengthSquared(): number {
-    return this.x * this.x + this.y * this.y + this.z * this.z;
-  }
-
-  normalize() {
-    const len = this.length();
-    if (len === 0 || len === 1.0) {
-      return this;
-    }
-
-    return this.scaleInPlace(1.0 / len);
-  }
-
-  cross(b: Vector3) {
-    return new (this.constructor as any)(this.y * b.z - this.z * b.y, this.z * b.x - this.x * b.z, this.x * b.y - this.y * b.x);
-  }
-
-  normalizeToNew() {
-    const normalized = new (this.constructor as any)(0, 0, 0);
-    this.normalizeToRef(normalized);
-    return normalized;
-  }
-
-  normalizeToRef(reference: Vector3): Vector3 {
-    const len = this.length();
-    if (len === 0 || len === 1.0) {
-      return reference.set(this.x, this.y, this.z);
-    }
-
-    return this.scaleToRef(1.0 / len, reference);
-  }
-
-  clone() {
-    return new (this.constructor as any)(this.x, this.y, this.z);
-  }
-
-  copyFrom(source: Vector3) {
-    this.x = source.x;
-    this.y = source.y;
-    this.z = source.z;
-    return this;
-  }
-
-  set(x: number, y: number, z: number) {
+  set(x: number, y: number, z: number): Vector3 {
     this.x = x;
     this.y = y;
     this.z = z;
     return this;
   }
 
+  copyFrom(source: Vector3): Vector3 {
+    this.x = source.x;
+    this.y = source.y;
+    this.z = source.z;
+    return this;
+  }
+
+  length(): number {
+    return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+  }
+
+  normalize(): Vector3 {
+    const len = this.length();
+    if (len === 0 || len === 1) {
+      return this.clone();
+    }
+
+    return this.scale(1 / len);
+  }
+
   dot(b: Vector3): number {
     return this.x * b.x + this.y * b.y + this.z * b.z;
+  }
+
+  cross(b: Vector3): Vector3 {
+    const x = this.y * b.z - this.z * b.y;
+    const y = this.z * b.x - this.x * b.z;
+    const z = this.x * b.y - this.y * b.x;
+    return new Vector3(x, y, z);
   }
 }

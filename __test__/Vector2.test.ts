@@ -72,20 +72,6 @@ describe('Vector2', () => {
     expect(vector.y).toBe(0);
   });
 
-  it('fromArray() sets the vector from an array', () => {
-    const array = [2, 3];
-    const vector = new Vector2().fromArray(array);
-    expect(vector.x).toBe(2);
-    expect(vector.y).toBe(3);
-  });
-
-  it('asArray() returns an array with the vector values', () => {
-    const vector = new Vector2(2, 3);
-    const array = vector.asArray();
-    expect(array[0]).toBe(2);
-    expect(array[1]).toBe(3);
-  });
-
   it('copyFrom() sets the vector from another vector', () => {
     const source = new Vector2(2, 3);
     const vector = new Vector2().copyFrom(source);
@@ -105,22 +91,5 @@ describe('Vector2', () => {
     const result = a.add(b);
     expect(result.x).toBe(4);
     expect(result.y).toBe(6);
-  });
-
-  it('addToRef() adds two vectors and stores the result in another vector', () => {
-    const a = new Vector2(1, 2);
-    const b = new Vector2(3, 4);
-    const result = new Vector2();
-    a.addToRef(b, result);
-    expect(result.x).toBe(4);
-    expect(result.y).toBe(6);
-  });
-
-  it('addInPlace() adds two vectors and stores the result in the first vector', () => {
-    const a = new Vector2(1, 2);
-    const b = new Vector2(3, 4);
-    a.addInPlace(b);
-    expect(a.x).toBe(4);
-    expect(a.y).toBe(6);
   });
 });
