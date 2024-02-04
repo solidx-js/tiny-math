@@ -1,8 +1,37 @@
 export class Matrix {
+  static Zero(): Matrix {
+    return new Matrix();
+  }
+
+  static Identity(): Matrix {
+    return new Matrix([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
+  }
+
   private _m: Float32Array;
 
-  constructor(data: ArrayLike<number>) {
+  constructor(data: ArrayLike<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) {
     this._m = new Float32Array(data);
+  }
+
+  get isIdentity(): boolean {
+    return (
+      this._m[0] === 1 &&
+      this._m[1] === 0 &&
+      this._m[2] === 0 &&
+      this._m[3] === 0 &&
+      this._m[4] === 0 &&
+      this._m[5] === 1 &&
+      this._m[6] === 0 &&
+      this._m[7] === 0 &&
+      this._m[8] === 0 &&
+      this._m[9] === 0 &&
+      this._m[10] === 1 &&
+      this._m[11] === 0 &&
+      this._m[12] === 0 &&
+      this._m[13] === 0 &&
+      this._m[14] === 0 &&
+      this._m[15] === 1
+    );
   }
 
   asArray(): number[] {
@@ -47,6 +76,10 @@ export class Matrix {
   }
 
   invert() {
+    if (this.isIdentity) {
+      return this.clone();
+    }
+
     // the inverse of a Matrix is the transpose of cofactor matrix divided by the determinant
     const m = this._m;
 
@@ -172,5 +205,13 @@ export class Matrix {
     const cofact_03 = -(m10 * det_21_32 - m11 * det_20_32 + m12 * det_20_31);
 
     return m00 * cofact_00 + m01 * cofact_01 + m02 * cofact_02 + m03 * cofact_03;
+  }
+
+  equals(other: Matrix) {
+    return this._m.every((v, i) => v === other._m[i]);
+  }
+
+  clone() {
+    return new Matrix(this._m);
   }
 }
