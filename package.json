@@ -8,8 +8,8 @@
   "scripts": {
     "test": "jest",
     "ci": "prettier --check src && tsc -p tsconfig.json --noEmit && npm run test",
-    "build": "tsc -p tsconfig.build.json --outDir dist",
-    "release": "npm run ci && rm -rf dist/* && npm run build && release-it"
+    "build": "rm -rf dist/* && webpack build && tsc -p tsconfig.build.json --outDir dist/esm",
+    "release": "npm run ci && npm run build && release-it"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -20,6 +20,9 @@
     "prettier": "^3.2.4",
     "release-it": "^17.0.1",
     "ts-jest": "^29.1.1",
-    "typescript": "^5.3.3"
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
   }
 }
